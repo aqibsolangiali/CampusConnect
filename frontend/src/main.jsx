@@ -4,7 +4,7 @@ import {BookOpen, GraduationCap, BriefcaseBusiness, LayoutDashboard, Search, Arr
 import './styles.css'
 
 const api = async (path, options = {}, token = '') => {
-  const res = await fetch('/api' + path, { ...options, headers: {'Content-Type': 'application/json', ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(options.headers || {})} })
+  const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api' + path, { { ...options, headers: {'Content-Type': 'application/json', ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(options.headers || {})} })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.detail || 'Something went wrong')
   return data
