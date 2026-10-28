@@ -3,12 +3,26 @@ import {createRoot} from 'react-dom/client'
 import {BookOpen, GraduationCap, BriefcaseBusiness, LayoutDashboard, Search, ArrowUpRight, Bookmark, LogOut, UserRound, Menu, X, ArrowRight, Sparkles, MapPin, Clock3, UsersRound, Check, Plus, Compass, LockKeyhole, Github, Filter, Layers3} from 'lucide-react'
 import './styles.css'
 
+
 const api = async (path, options = {}, token = '') => {
-  const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api' + path, { { ...options, headers: {'Content-Type': 'application/json', ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(options.headers || {})} })
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.detail || 'Something went wrong')
-  return data
-}
+  const baseUrl = import.meta.env.VITE_API_URL || '';
+
+  const res = await fetch(`${baseUrl}/api${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) throw new Error(data.detail || 'Something went wrong');
+
+  return data;
+};
+  
 const types = { Research: 'violet', Internship: 'blue', Event: 'orange', Volunteer: 'green', Hackathon: 'pink' }
 const departments = ['All departments', 'Computer Science', 'Mathematics', 'Humanities']
 function App(){
