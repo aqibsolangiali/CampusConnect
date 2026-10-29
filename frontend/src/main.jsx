@@ -3,26 +3,20 @@ import {createRoot} from 'react-dom/client'
 import {BookOpen, GraduationCap, BriefcaseBusiness, LayoutDashboard, Search, ArrowUpRight, Bookmark, LogOut, UserRound, Menu, X, ArrowRight, Sparkles, MapPin, Clock3, UsersRound, Check, Plus, Compass, LockKeyhole, Github, Filter, Layers3} from 'lucide-react'
 import './styles.css'
 
-
+// Local development uses Vite's /api proxy. A deployed static site can use a separate API origin.
+// VITE_API_URL is public build-time configuration, never a place for secrets.
+const apiOrigin = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '').replace(/\/api$/i, '')
 const api = async (path, options = {}, token = '') => {
-  const baseUrl = import.meta.env.VITE_API_URL || '';
-
-  const res = await fetch(`${baseUrl}/api${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
-  });
-
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) throw new Error(data.detail || 'Something went wrong');
-
-  return data;
-};
-  
+  let res
+  try {
+    res = await fetch(`${apiOrigin}/api${path}`, { ...options, headers: {'Content-Type': 'application/json', ...(token ? {Authorization: `Bearer ${token}`} : {}), ...(options.headers || {})} })
+  } catch {
+    throw new Error('Cannot reach the CampusConnect API. Check the backend service and VITE_API_URL setting.')
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(data.detail || 'Something went wrong')
+  return data
+}
 const types = { Research: 'violet', Internship: 'blue', Event: 'orange', Volunteer: 'green', Hackathon: 'pink' }
 const departments = ['All departments', 'Computer Science', 'Mathematics', 'Humanities']
 function App(){

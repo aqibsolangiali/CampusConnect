@@ -1,0 +1,8 @@
+GitHub About description:
+Built and deployed a full-stack campus discovery platform with React, FastAPI, SQLAlchemy, JWT authentication, course enrollment, searchable opportunities, personalized bookmarks, and a responsive dashboard. Integrated REST APIs, relational databases, CI testing, and Render deployment.
+
+Website:
+https://campusconnect-web-mvbs.onrender.com/
+
+Suggested GitHub topics:
+react, fastapi, python, full-stack, campus-platform, student-dashboard, sqlalchemy, postgresql, jwt-authentication, rest-api, vite, render
